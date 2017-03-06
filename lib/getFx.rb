@@ -1,21 +1,23 @@
 class GetFx
-  def self.hi(language = "english")
-    translator = Translator.new(language)
-    translator.hi
+  def self.run(curr = "GBP")
+    parser = Parser.new(curr)
+    parser.run
   end
 end
 
-class GetFx::Translator
-  def initialize(language)
-    @language = language
+class GetFx::Parser
+  def initialize(curr)
+    @curr = curr
   end
 
-  def hi
-    case @language
-    when "spanish"
-      "hola mundo"
+  def run
+    case @curr
+    when "GBP"
+      # get currency parse stuff
+      '£££1'
     else
-      "hello world"
+      # do default parse of GBP
+      '$$$'
     end
   end
 end

@@ -10,4 +10,5 @@ Gem::Specification.new do |s|
   s.homepage    =
     'http://rubygems.org/gems/getfx-cq'
   s.license       = 'MIT'
+  s.add_dependency('nokogiri')
 end
