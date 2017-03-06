@@ -1,23 +1,21 @@
+require 'nokogiri'
+
 class GetFx
-  def self.run(curr = "GBP")
-    parser = Parser.new(curr)
+  def self.run(curr = "GBP", time = "2017-03-03")
+    parser = Parser.new(curr, time)
     parser.run
   end
 end
 
 class GetFx::Parser
-  def initialize(curr)
+  def initialize(curr, time)
     @curr = curr
+    @time = time
+    @doc = File.open("feed.xml") { |f| Nokogiri::XML(f) }
   end
 
   def run
-    case @curr
-    when "GBP"
-      # get currency parse stuff
-      '£££1'
-    else
-      # do default parse of GBP
-      '$$$'
-    end
+    r = @doc.css("[@time='" + @time + "'] > [@currency='" + @curr + "']")
+    puts r
   end
 end
