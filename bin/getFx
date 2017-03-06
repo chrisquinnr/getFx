@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
 require 'getFx'
-puts GetFx.run(ARGV[0], ARGV[1])
+puts GetFx.run(ARGV[0], ARGV[1], ARGV[2])
