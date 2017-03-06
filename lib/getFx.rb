@@ -15,7 +15,9 @@ class GetFx::Parser
   end
 
   def run
-    puts 'fetching ' + @curr + ' on ' + @date
-    r = @doc.css("[@time='" + @date + "'] > [@currency='" + @curr + "']")[0]["rate"]
+    if(@curr && @date)
+      puts 'fetching ' + @curr + ' on ' + @date
+      r = @doc.css("[@time='" + @date + "'] > [@currency='" + @curr + "']")[0]["rate"]
+    end
   end
 end
