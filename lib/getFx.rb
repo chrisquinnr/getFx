@@ -1,7 +1,10 @@
 require 'nokogiri'
 
 class GetFx
-  def self.run(curr = "GBP", time = "2017-02-28", amt = 1)
+  def self.run(*opts)
+    opts[0] ? curr = opts[0] : curr = "USD"
+    opts[1] ? time = opts[1] : time = "2017-02-28"
+    opts[2] ? amt = opts[2] : amt = 1
     parser = Parser.new(curr, time, amt)
     parser.run
   end
@@ -16,7 +19,7 @@ class GetFx::Parser
   end
 
   def run
-    if(@curr && @date)
+    if(@curr && @date && @amt)
       r = @doc.css("[@time='" + @date + "'] > [@currency='" + @curr + "']")[0]["rate"]
       i = r.to_f
       i * @amt
