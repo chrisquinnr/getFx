@@ -8,9 +8,12 @@ class GetFx
       args = []
     end
 
+    Validator.initialize
+
     curr = "USD"
     if args[0]
-      curr = args[0]
+      curr_f = args[0].upcase
+      Validator.currency(curr_f)
     end 
 
     date = "2017-02-28"
@@ -24,9 +27,30 @@ class GetFx
     end
 
     parser = Parser.new(curr, date, amt)
-    parser.run
+    return parser.runCompute
 
   end
+end
+
+class GetFx:Validator
+
+  def initialize
+    @doc = File.open("feed.xml") { |f| Nokogiri::XML(f) }
+  end
+
+  def currency(value)
+   if value
+     r = @doc.css("[@currency='" + @curr + "']")
+     puts r
+   end
+  end
+
+  def date
+  end
+
+  def amt
+  end
+
 end
 
 class GetFx::Parser
@@ -37,9 +61,9 @@ class GetFx::Parser
     @amt = amt.to_f
   end
 
-  def run
+  def runCompute
     r = @doc.css("[@time='" + @date + "'] > [@currency='" + @curr + "']")[0]["rate"]
     i = r.to_f
-    puts (i * @amt).round(2)
+    return i * @amt
   end
 end
