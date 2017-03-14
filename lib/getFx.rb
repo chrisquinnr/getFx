@@ -8,12 +8,13 @@ class GetFx
       args = []
     end
 
-    Validator.initialize
+    valid = Validator.new('feed.xml')
 
     curr = "USD"
     if args[0]
       curr_f = args[0].upcase
-      Validator.currency(curr_f)
+      test = valid.currency(curr_f)
+      puts test
     end 
 
     date = "2017-02-28"
@@ -32,20 +33,33 @@ class GetFx
   end
 end
 
-class GetFx:Validator
+class GetFx::Validator
 
-  def initialize
-    @doc = File.open("feed.xml") { |f| Nokogiri::XML(f) }
+  def initialize(path)
+    @doc = File.open(path) { |f| Nokogiri::XML(f) }
   end
 
   def currency(value)
    if value
-     r = @doc.css("[@currency='" + @curr + "']")
-     puts r
+     r = @doc.css("[@currency='" + value + "']")
+     unless r.nil? && r[0].nil? && r[0]["rate"].nil?
+       puts r[0]
+       return r[0]["rate"]
+     else 
+       return false
+     end
    end
   end
 
-  def date
+  def date(value)
+   if value
+     r = @doc.css("[@time='" + value + "']")[0]["rate"]
+     if r
+       return r
+     else
+       return false
+     end
+   end
   end
 
   def amt
