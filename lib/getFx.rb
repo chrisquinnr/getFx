@@ -4,6 +4,8 @@ class GetFx
   def self.run(*params)
     if params
       args = params[0]
+    else
+      args = []
     end
 
     curr = "USD"
@@ -38,6 +40,6 @@ class GetFx::Parser
   def run
     r = @doc.css("[@time='" + @date + "'] > [@currency='" + @curr + "']")[0]["rate"]
     i = r.to_f
-    i * @amt
+    puts (i * @amt).round(2)
   end
 end
