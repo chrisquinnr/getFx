@@ -14,12 +14,18 @@ class GetFx
     if args[0]
       curr_f = args[0].upcase
       test = valid.currency(curr_f)
-      puts test
+      unless test.nil?
+        curr = curr_f
+      end
     end 
 
     date = "2017-02-28"
     if args[1]
-      date = args[1]
+      date_f = args[1]
+      test = valid.date(date_f)
+      unless test.nil?
+        curr = curr_f
+      end
     end
 
     amt = 1
@@ -41,24 +47,27 @@ class GetFx::Validator
 
   def currency(value)
    if value
-     r = @doc.css("[@currency='" + value + "']")
-     unless r.nil? && r[0].nil? && r[0]["rate"].nil?
-       puts r[0]
-       return r[0]["rate"]
-     else 
-       return false
+     r = @doc.at_css("[@currency='" + value + "']")
+     if r 
+	return r
+     else
+        return nil 
      end
+   else 
+    return nil
    end
   end
 
   def date(value)
    if value
-     r = @doc.css("[@time='" + value + "']")[0]["rate"]
+     r = @doc.css("[@time='" + value + "']")
      if r
-       return r
-     else
-       return false
+        return r
+     else 
+        return nil
      end
+   else
+    return nil
    end
   end
 
