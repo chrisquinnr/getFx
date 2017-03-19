@@ -1,4 +1,5 @@
 require 'nokogiri'
+require 'open-uri'
 
 class GetFx
   def self.run(*params)
@@ -42,7 +43,8 @@ end
 class GetFx::Validator
 
   def initialize(path)
-    @doc = File.open(path) { |f| Nokogiri::XML(f) }
+    # @doc = File.open(path) { |f| Nokogiri::XML(f) }
+    @doc = Nokogiri::HTML(open("https://s3.eu-west-2.amazonaws.com/cq-dev-storage/feed.xml"))
   end
 
   def currency(value)
