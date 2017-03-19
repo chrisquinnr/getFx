@@ -9,7 +9,7 @@ class GetFx
       args = []
     end
 
-    valid = Validator.new('feed.xml')
+    valid = Validator.new("https://s3.eu-west-2.amazonaws.com/cq-dev-storage/feed.xml")
 
     curr = "USD"
     if args[0]
@@ -42,9 +42,8 @@ end
 
 class GetFx::Validator
 
-  def initialize(path)
-    # @doc = File.open(path) { |f| Nokogiri::XML(f) }
-    @doc = Nokogiri::HTML(open("https://s3.eu-west-2.amazonaws.com/cq-dev-storage/feed.xml"))
+  def initialize(URL)
+    @doc = Nokogiri::HTML(open(URI))
   end
 
   def currency(value)

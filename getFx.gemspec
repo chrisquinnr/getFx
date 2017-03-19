@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'getFx-cq'
-  s.version     = '0.7.7'
-  s.date        = '2017-03-13'
+  s.version     = '0.7.8'
+  s.date        = '2017-03-19'
   s.summary     = "Get Forex data and provide wrapper to store and parse."
   s.description = "Fetches forex data from a given source, then offers methods to parse"
   s.authors     = ["Chris Quinn"]
