@@ -39,6 +39,21 @@ class GetFx
     return parser.runCompute
 
   end
+
+  def self.currencies
+    Currencies.new()
+  end
+
+end
+
+class GetFx::Currencies
+
+  def initialize()
+    doc = Nokogiri::HTML(open("https://s3.eu-west-2.amazonaws.com/cq-dev-storage/feed.xml"))
+    select = "[@time='" + "2017-01-02" + "']"
+    nodeset = doc.css("[currency]").map { |node| node['currency'] }
+    return nodeset.uniq
+  end
 end
 
 class GetFx::Validator
@@ -48,29 +63,29 @@ class GetFx::Validator
   end
 
   def currency(value)
-   if value
-     r = @doc.at_css("[@currency='" + value + "']")
-     if r
-  return r
-     else
+    if value
+      r = @doc.at_css("[@currency='" + value + "']")
+      if r
+        return r
+      else
         return nil
-     end
-   else
-    return nil
-   end
+      end
+    else
+      return nil
+    end
   end
 
   def date(value)
-   if value
-     r = @doc.css("[@time='" + value + "']")
-     if r
+    if value
+      r = @doc.css("[@time='" + value + "']")
+      if r
         return r
-     else
+      else
         return nil
-     end
-   else
-    return nil
-   end
+      end
+    else
+      return nil
+    end
   end
 
   def amt
