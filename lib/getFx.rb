@@ -41,7 +41,8 @@ class GetFx
   end
 
   def self.currencies
-    Currencies.new()
+    curr = Currencies.new()
+    return curr.get()
   end
 
 end
@@ -49,9 +50,12 @@ end
 class GetFx::Currencies
 
   def initialize()
-    doc = Nokogiri::HTML(open("https://s3.eu-west-2.amazonaws.com/cq-dev-storage/feed.xml"))
+    @doc = Nokogiri::HTML(open("https://s3.eu-west-2.amazonaws.com/cq-dev-storage/feed.xml"))
+  end
+
+  def get()
     select = "[@time='" + "2017-01-02" + "']"
-    nodeset = doc.css("[currency]").map { |node| node['currency'] }
+    nodeset = @doc.css("[currency]").map { |node| node['currency'] }
     return nodeset.uniq
   end
 end
