@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
 require 'getFx'
-GetFx.run(ARGV)
+puts GetFx.run(ARGV)

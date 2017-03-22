@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 
 class GetFx
+
   def self.run(*params)
     if params
       args = params[0]
@@ -9,7 +10,7 @@ class GetFx
       args = []
     end
 
-    valid = Validator.new("https://s3.eu-west-2.amazonaws.com/cq-dev-storage/feed.xml")
+    valid = Validator.new()
 
     curr = "USD"
     if args[0]
@@ -18,7 +19,7 @@ class GetFx
       unless test.nil?
         curr = curr_f
       end
-    end 
+    end
 
     date = "2017-02-28"
     if args[1]
@@ -42,19 +43,19 @@ end
 
 class GetFx::Validator
 
-  def initialize(URL)
-    @doc = Nokogiri::HTML(open(URI))
+  def initialize()
+    @doc = Nokogiri::HTML(open("https://s3.eu-west-2.amazonaws.com/cq-dev-storage/feed.xml"))
   end
 
   def currency(value)
    if value
      r = @doc.at_css("[@currency='" + value + "']")
-     if r 
-	return r
+     if r
+  return r
      else
-        return nil 
+        return nil
      end
-   else 
+   else
     return nil
    end
   end
@@ -64,7 +65,7 @@ class GetFx::Validator
      r = @doc.css("[@time='" + value + "']")
      if r
         return r
-     else 
+     else
         return nil
      end
    else
@@ -79,7 +80,7 @@ end
 
 class GetFx::Parser
   def initialize(curr, date, amt)
-    @doc = File.open("feed.xml") { |f| Nokogiri::XML(f) }
+    @doc = Nokogiri::HTML(open("https://s3.eu-west-2.amazonaws.com/cq-dev-storage/feed.xml"))
     @curr = curr
     @date = date
     @amt = amt.to_f
